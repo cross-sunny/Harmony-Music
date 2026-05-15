@@ -1,5 +1,10 @@
 {
   "module": {
+    "requestPermissions": [
+      {
+        "name": "ohos.permission.INTERNET"
+      }
+    ],
     "routerMap": "$profile:route_map",
     "name": "entry",
     "type": "entry",
@@ -46,8 +51,8 @@
             "name": "ohos.extension.backup",
             "resource": "$profile:backup_config"
           }
-        ],
+        ]
       }
-    ]
+    ],
   }
 }

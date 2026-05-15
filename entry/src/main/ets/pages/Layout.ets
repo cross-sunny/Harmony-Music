@@ -12,6 +12,7 @@ interface TabClass {
 export function LayoutBuilder() {
   Layout()
 }
+
 @Preview
 @ComponentV2
 struct Layout {
@@ -38,34 +39,44 @@ struct Layout {
 
   build() {
     NavDestination() {
-      Tabs({ barPosition: BarPosition.End, index: this.index }) {
-        TabContent() {
-          Recommend()
-        }
-        .tabBar(this.tabBuilder(this.tabData[0], 0))
+      Column() {
+        // 黑色状态栏条（永不灰色！）
+        Row()
+          .width('100%')
+          .height(26)
+          .backgroundColor('#131215')
 
-        TabContent() {
-          Find()
-        }
-        .tabBar(this.tabBuilder(this.tabData[1], 1))
+        Tabs({ barPosition: BarPosition.End, index: this.index }) {
+          TabContent() {
+            Recommend()
+          }
+          .tabBar(this.tabBuilder(this.tabData[0], 0))
 
-        TabContent() {
-          Moment()
-        }
-        .tabBar(this.tabBuilder(this.tabData[2], 2))
+          TabContent() {
+            Find()
+          }
+          .tabBar(this.tabBuilder(this.tabData[1], 1))
 
-        TabContent() {
-          Mine()
+          TabContent() {
+            Moment()
+          }
+          .tabBar(this.tabBuilder(this.tabData[2], 2))
+
+          TabContent() {
+            Mine()
+          }
+          .tabBar(this.tabBuilder(this.tabData[3], 3))
         }
-        .tabBar(this.tabBuilder(this.tabData[3], 3))
+        .backgroundColor('#3B3F42')
+        .animationDuration(150)
+        .onChange((idx: number) => {
+          this.index = idx;
+        })
+        .layoutWeight(1)
       }
-      .backgroundColor('#3B3F42')
-      .animationDuration(150) // 【唯一新增的一行】：将动画时间缩短为150毫秒，既有动画又丝滑不黏手！
-      .onChange((idx: number) => {
-        this.index = idx;
-      })
-      .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM])
+      .backgroundColor('#131215')
     }
+    .backgroundColor('#131215')
     .onReady((context: NavDestinationContext) => {
       this.pathStack = context.pathStack
     })
