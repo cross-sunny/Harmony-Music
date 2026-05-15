@@ -15,8 +15,7 @@ export function LayoutBuilder() {
 @Preview
 @ComponentV2
 struct Layout {
-  // 重要：去掉 @Local，直接使用 Tabs 内置 index，状态完全同步！
-  index: number = 0;
+  @Local index: number = 0;
   pathStack: NavPathStack = new NavPathStack()
 
   tabData: TabClass[] = [
@@ -30,7 +29,6 @@ struct Layout {
     Column({ space: 5 }) {
       Image(item.icon)
         .width(24)
-        // 直接用 TABS 自带的 index，完全实时同步！
         .fillColor(this.index === index ? '#E85A88' : '#63AAAA')
       Text(item.text)
         .fontSize(14)
@@ -62,8 +60,9 @@ struct Layout {
         .tabBar(this.tabBuilder(this.tabData[3], 3))
       }
       .backgroundColor('#3B3F42')
+      .animationDuration(150) // 【唯一新增的一行】：将动画时间缩短为150毫秒，既有动画又丝滑不黏手！
       .onChange((idx: number) => {
-        this.index = idx; // 完全实时同步
+        this.index = idx;
       })
       .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM])
     }
