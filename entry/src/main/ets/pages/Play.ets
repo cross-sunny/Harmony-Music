@@ -314,9 +314,28 @@ import { playerManager } from "../utils/AvPlayerManager";
                   .padding(24)
                   // 切换
                   Row() {
-                    Image($r('app.media.ic_auto'))
-                      .fillColor(Color.White)
-                      .width(30)
+                    if (this.playState.playMode === 'auto') {
+                      Image($r('app.media.ic_auto'))
+                        .fillColor(Color.White)
+                        .width(30)
+                        .onClick(() => {
+                          this.playState.playMode = 'random'
+                        })
+                    } else if (this.playState.playMode === 'random') {
+                      Image($r('app.media.ic_random'))
+                        .fillColor(Color.White)
+                        .width(30)
+                        .onClick(() => {
+                          this.playState.playMode = 'repeat'
+                        })
+                    } else if (this.playState.playMode === 'repeat') {
+                      Image($r('app.media.ic_repeat'))
+                        .fillColor(Color.White)
+                        .width(30)
+                        .onClick(() => {
+                          this.playState.playMode = 'auto'
+                        })
+                    }
 
                     Image($r("app.media.ic_prev"))
                       .fillColor(Color.White)
@@ -487,6 +506,8 @@ import { playerManager } from "../utils/AvPlayerManager";
       }
       .onReady((context: NavDestinationContext) => {
         this.pathStack = context.pathStack
+
+        this.playState.playList = this.songs
       })
       .hideTitleBar(true)  // 隐藏标题栏
     }
