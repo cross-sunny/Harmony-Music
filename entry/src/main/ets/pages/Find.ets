@@ -1,6 +1,7 @@
 import { SongItemType } from "../models/music"
 import { AppStorageV2 } from "@kit.ArkUI"
 import { playerManager } from '../utils/AvPlayerManager'
+import { GlobalMusic } from "../models/globalMusic"
 
 @ComponentV2
 export struct Find {
@@ -120,7 +121,9 @@ export struct Find {
     }
   ]
   pathStack : NavPathStack = AppStorageV2.connect(NavPathStack, 'navStack', () => new NavPathStack())!
-
+  // 当前播放的歌曲
+  @Local
+  playState: GlobalMusic = AppStorageV2.connect(GlobalMusic, 'SONG_KEY', () => new GlobalMusic())!
   build() {
     Column() {
       Text('猜你喜欢')
@@ -137,6 +140,8 @@ export struct Find {
                   .width(80)
                   .border({ radius: 8 })
                   .margin({ right: 10 })
+                // 条件渲染： 正在播放才跳动
+                if (this.playState.url == item.url && this.playState.isPlay)
                 Image($r('app.media.wave'))
                   .width(24)
               }

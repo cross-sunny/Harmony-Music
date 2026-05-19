@@ -321,15 +321,24 @@ import { playerManager } from "../utils/AvPlayerManager";
                     Image($r("app.media.ic_prev"))
                       .fillColor(Color.White)
                       .width(30)
+                      .onClick(() =>{
+                        playerManager.prevPlay()
+                      })
 
                     // 播放按钮
-                    Image($r('app.media.ic_paused'))
+                    Image(this.playState.isPlay ? $r('app.media.ic_paused') : $r('app.media.ic_play'))
                       .fillColor(Color.White)
                       .width(50)
+                      .onClick(() => {
+                        this.playState.isPlay ? playerManager.paused() : playerManager.singPlay(this.playState.playList[this.playState.playIndex])
+                      })
                     // 下一首
                     Image($r('app.media.ic_next'))
                       .fillColor(Color.White)
                       .width(30)
+                      .onClick(() =>{
+                        playerManager.nextPlay()
+                      })
                     // 播放列表
                     Image($r('app.media.ic_song_list'))
                       .fillColor(Color.White)
