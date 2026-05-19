@@ -1,5 +1,6 @@
 import { SongItemType } from "../models/music"
 import { AppStorageV2 } from "@kit.ArkUI"
+import { playerManager } from '../utils/AvPlayerManager'
 
 @ComponentV2
 export struct Find {
@@ -176,6 +177,7 @@ export struct Find {
             .margin({ bottom: 10 })
             .onClick(() => {
               this.pathStack.pushPathByName('Play', null, false)
+              playerManager.singPlay(item)
             })
           }
         })
