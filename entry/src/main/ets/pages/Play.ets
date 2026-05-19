@@ -144,6 +144,10 @@ import { playerManager } from "../utils/AvPlayerManager";
         .width(80)
         .height('100%')
         .type(ButtonType.Normal)
+        .onClick(() => {
+          // 【新增】：调用删除逻辑
+          playerManager.removeSong(index)
+        })
 
     }
 
@@ -408,7 +412,8 @@ import { playerManager } from "../utils/AvPlayerManager";
                 .justifyContent(FlexAlign.Center)
 
                 Row({ space: 8 }) {
-                  Text(`播放列表 (0)`)
+                  // 【修改1】：动态渲染播放列表总数
+                  Text(`播放列表 (${this.playState.playList.length})`)
                     .fontColor(Color.White)
                     .fontSize(14)
                 }
@@ -438,12 +443,20 @@ import { playerManager } from "../utils/AvPlayerManager";
 
               // 播放列表
               List() {
-                ForEach(this.songs, (item: SongItemType, index: number) => {
+                // 【修改2】：把数据源 this.songs 换成真正的播放列表 this.playState.playList
+                ForEach(this.playState.playList, (item: SongItemType, index: number) => {
                   ListItem() {
                     Row() {
                       Row() {
-                        Text((index + 1).toString())
-                          .fontColor('#ffa49a9a')
+                        // 【新增 UI 细节】：如果是正在播放的这首歌，前面显示一个跳动的小波浪图标或粉色文字，否则显示灰色数字
+                        if (this.playState.playIndex === index) {
+                          Image($r('app.media.ic_play')) // 建议你换个动效图，暂时用播放小图标代替高亮
+                            .width(16)
+                            .fillColor('#ec5c87')
+                        } else {
+                          Text((index + 1).toString())
+                            .fontColor('#ffa49a9a')
+                        }
                       }
                       .width(50)
                       .aspectRatio(1)
@@ -454,7 +467,8 @@ import { playerManager } from "../utils/AvPlayerManager";
                         Column() {
                           Text(item.name)
                             .fontSize(14)
-                            .fontColor('#ffa49a9a')
+                            // 【新增 UI 细节】：正在播放的歌名变成粉色
+                            .fontColor(this.playState.playIndex === index ? '#ec5c87' : '#ffa49a9a')
                           Text(item.author)
                             .fontSize(12)
                             .fontColor( Color.Gray)
@@ -472,6 +486,10 @@ import { playerManager } from "../utils/AvPlayerManager";
                         .fillColor(Color.Gray)
                     }
                     .alignItems(VerticalAlign.Center)
+                    // 【修改3】：给整行加上点击事件，点击后立刻播放这首歌
+                    .onClick(() => {
+                      playerManager.singPlay(item)
+                    })
                   }
                   .swipeAction({
                     end: this.deleteButton(index)
