@@ -1,6 +1,6 @@
 import { GlobalMusic } from "../models/globalMusic";
 import { SongItemType } from "../models/music"
-import { AppStorageV2 } from "@kit.ArkUI";
+import { AppStorageV2, promptAction } from "@kit.ArkUI";
 import { playerManager } from "../utils/AvPlayerManager";
 
 // 跳转页面入口函数
@@ -484,6 +484,39 @@ import { playerManager } from "../utils/AvPlayerManager";
                         .height(24)
                         .margin({ right: 16 })
                         .fillColor(Color.Gray)
+                        // 【新增】：三个点的点击事件，呼出系统级底部菜单
+                        .onClick(() => {
+                          ActionSheet.show({
+                            title: '歌曲操作',
+                            message: `《${item.name}》- ${item.author}`,
+                            autoCancel: true,
+                            confirm: {
+                              value: '取消',
+                              action: () => {}
+                            },
+                            alignment: DialogAlignment.Bottom,
+                            offset: { dx: 0, dy: -20 }, // 稍微往上偏移一点，防止挡住底部
+                            sheets: [
+                              {
+                                title: '❤️ 添加到我的歌单 (收藏)',
+                                action: () => {
+                                  // 这里写添加到歌单的逻辑，目前用Toast模拟提示
+                                  promptAction.showToast({
+                                    message: '✅ 已成功添加到我喜欢的音乐',
+                                    duration: 2000
+                                  })
+                                }
+                              },
+                              {
+                                title: '🗑️ 从播放列表中移除',
+                                action: () => {
+                                  // 复用我们之前写好的删除逻辑
+                                  playerManager.removeSong(index)
+                                }
+                              }
+                            ]
+                          })
+                        })
                     }
                     .alignItems(VerticalAlign.Center)
                     // 【修改3】：给整行加上点击事件，点击后立刻播放这首歌
