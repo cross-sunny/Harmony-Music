@@ -12,7 +12,7 @@ struct Start {
   aboutToAppear(): void { // 生命周期
     setTimeout(() => {
       this.pageStack.replacePathByName("Layout", null, false)
-    }, 3000) // 毫秒为单位 1000毫秒 = 1秒
+    }, 1000) // 毫秒为单位 1000毫秒 = 1秒
   }
 
   build() {
@@ -28,13 +28,13 @@ struct Start {
           .height('100%')
           .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM])
 
-        Button('跳过')
-          .backgroundColor(Color.Grey)
-          .margin(15)
-          .onClick(() => {
-            this.pageStack.replacePathByName("Layout", null, false)
-            // this.pageStack.pushPathByName("Layout", null, false)
-          })
+        // Button('跳过')
+        //   .backgroundColor(Color.Grey)
+        //   .margin(15)
+        //   .onClick(() => {
+        //     this.pageStack.replacePathByName("Layout", null, false)
+        //     // this.pageStack.pushPathByName("Layout", null, false)
+        //   })
       }
     }
     // .title('广告页')
